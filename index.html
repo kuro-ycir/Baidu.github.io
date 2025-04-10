@@ -72,7 +72,7 @@
 
     <script>
         // 初始化 ECharts
-        function createChart(elementId, mediaData) {
+        function createChart(elementId, mediaData, mediaType, totalMedia) {
             var chart = echarts.init(document.getElementById(elementId));
 
             var option = {
@@ -92,8 +92,11 @@
                         radius: ['40%', '70%'],
                         avoidLabelOverlap: false,
                         label: {
-                            show: false,
-                            position: 'center'
+                            show: true,
+                            position: 'center',
+                            fontSize: 16,
+                            formatter: '{b}\n' + mediaType + ': {c}',  // 显示中央文字
+                            fontWeight: 'bold'
                         },
                         emphasis: {
                             label: {
@@ -146,9 +149,9 @@
             var phaseData = data[phase];
 
             // 更新图表
-            createChart('chart1', phaseData['央级媒体']);
-            createChart('chart2', phaseData['行业媒体']);
-            createChart('chart3', phaseData['地方媒体']);
+            createChart('chart1', phaseData['央级媒体'], '央级媒体', 18);
+            createChart('chart2', phaseData['行业媒体'], '行业媒体', 4);
+            createChart('chart3', phaseData['地方媒体'], '地方媒体', 127);
         }
     </script>
 </body>

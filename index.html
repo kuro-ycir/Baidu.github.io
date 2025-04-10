@@ -1,88 +1,118 @@
-// App.jsx
-import { useState } from 'react';
-import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百度开盒事件 - 媒体参与可视化</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .chart-container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        .chart {
+            width: 100%;
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+    <h2>百度开盒事件：媒体类型参与分布</h2>
 
-const COLORS = ['#ff6b6b', '#4dabf7', '#ffd43b'];
-
-const timeSeriesData = {
-  '2024-12-10': [
-    { name: '央级媒体', value: 5, description: '当日有5家央级媒体发声' },
-    { name: '地方媒体', value: 8, description: '地方报道集中在华中地区' },
-    { name: '行业媒体', value: 2, description: '行业媒体初步关注事件' },
-  ],
-  '2024-12-11': [
-    { name: '央级媒体', value: 12, description: '新华社、央视等集中发声' },
-    { name: '地方媒体', value: 15, description: '地方媒体报道显著增多' },
-    { name: '行业媒体', value: 5, description: '公益、法律媒体持续跟进' },
-  ],
-  '2024-12-12': [
-    { name: '央级媒体', value: 18, description: '央级媒体持续推进话题讨论' },
-    { name: '地方媒体', value: 22, description: '地方参与热度高涨' },
-    { name: '行业媒体', value: 10, description: '形成多行业联动关注' },
-  ],
-};
-
-const App = () => {
-  const dates = Object.keys(timeSeriesData);
-  const [selectedDate, setSelectedDate] = useState(dates[0]);
-  const [activeIndex, setActiveIndex] = useState(null);
-
-  const data = timeSeriesData[selectedDate];
-
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
-      <h1 className="text-2xl font-bold mb-4">百度开盒事件：媒体参与动态可视化</h1>
-
-      <div className="mb-4">
-        <label htmlFor="date-slider" className="block text-sm font-medium mb-1">
-          时间：{selectedDate}
-        </label>
-        <input
-          type="range"
-          id="date-slider"
-          min={0}
-          max={dates.length - 1}
-          value={dates.indexOf(selectedDate)}
-          onChange={(e) => setSelectedDate(dates[parseInt(e.target.value)])}
-          className="w-64"
-        />
-      </div>
-
-      <PieChart width={400} height={400}>
-        <Pie
-          data={data}
-          cx="50%"
-          cy="50%"
-          innerRadius={80}
-          outerRadius={120}
-          dataKey="value"
-          onMouseEnter={(_, index) => setActiveIndex(index)}
-          onMouseLeave={() => setActiveIndex(null)}
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-        <Tooltip
-          content={({ active, payload }) =>
-            active && payload?.length ? (
-              <div className="bg-white p-2 border rounded shadow text-sm">
-                <p className="font-bold">{payload[0].name}</p>
-                <p>{payload[0].payload.description}</p>
-              </div>
-            ) : null
-          }
-        />
-      </PieChart>
-
-      {activeIndex !== null && (
-        <div className="mt-4 text-center text-gray-700">
-          <h2 className="text-lg font-semibold">{data[activeIndex].name}</h2>
-          <p>{data[activeIndex].description}</p>
-        </div>
-      )}
+    <!-- 初始曝光期 -->
+    <div class="chart-container">
+        <h3>初始曝光期（3月12日0时——3月17日18时）</h3>
+        <div id="chart1" class="chart"></div>
     </div>
-  );
-};
 
-export default App;
+    <!-- 热议高峰期 -->
+    <div class="chart-container">
+        <h3>热议高峰期（3月17日18时——3月19日20时）</h3>
+        <div id="chart2" class="chart"></div>
+    </div>
+
+    <!-- 官方应对期 -->
+    <div class="chart-container">
+        <h3>官方应对期（3月19日20时——3月20日23时）</h3>
+        <div id="chart3" class="chart"></div>
+    </div>
+
+    <!-- 舆论回落期 -->
+    <div class="chart-container">
+        <h3>舆论回落期（3月20日23时后）</h3>
+        <div id="chart4" class="chart"></div>
+    </div>
+
+    <script>
+        // 初始化 ECharts
+        function createChart(elementId, mediaData) {
+            var chart = echarts.init(document.getElementById(elementId));
+
+            var option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['央级媒体', '行业媒体', '地方媒体']
+                },
+                series: [
+                    {
+                        name: '媒体类型',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: '20',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: [
+                            { value: mediaData['央级媒体'], name: '央级媒体' },
+                            { value: mediaData['行业媒体'], name: '行业媒体' },
+                            { value: mediaData['地方媒体'], name: '地方媒体' }
+                        ]
+                    }
+                ]
+            };
+
+            chart.setOption(option);
+        }
+
+        // 数据
+        var data = {
+            "初始曝光期": { '央级媒体': 0, '行业媒体': 0, '地方媒体': 2 },
+            "热议高峰期": { '央级媒体': 14, '行业媒体': 2, '地方媒体': 60 },
+            "官方应对期": { '央级媒体': 10, '行业媒体': 2, '地方媒体': 71 },
+            "舆论回落期": { '央级媒体': 4, '行业媒体': 2, '地方媒体': 37 }
+        };
+
+        // 创建每个阶段的图表
+        createChart('chart1', data['初始曝光期']);
+        createChart('chart2', data['热议高峰期']);
+        createChart('chart3', data['官方应对期']);
+        createChart('chart4', data['舆论回落期']);
+    </script>
+</body>
+</html>

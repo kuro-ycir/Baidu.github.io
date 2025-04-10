@@ -95,7 +95,7 @@
                             show: true,
                             position: 'center',
                             fontSize: 16,
-                            formatter: '{b}\n' + mediaType + ': {c}',  // 显示中央文字为实际的参与数量
+                            formatter: mediaType + '\n' + '{c}',  // 显示中央文字为媒体类型和实际的参与数量
                             fontWeight: 'bold'
                         },
                         emphasis: {
@@ -149,9 +149,9 @@
             var phaseData = data[phase];
 
             // 更新图表
-            createChart('chart1', phaseData['央级媒体'], '央级媒体', 18);
-            createChart('chart2', phaseData['行业媒体'], '行业媒体', 4);
-            createChart('chart3', phaseData['地方媒体'], '地方媒体', 127);
+            createChart('chart1', phaseData['央级媒体'], '央级媒体: ' + 18, 18);
+            createChart('chart2', phaseData['行业媒体'], '行业媒体: ' + 4, 4);
+            createChart('chart3', phaseData['地方媒体'], '地方媒体: ' + 127, 127);
         }
     </script>
 </body>

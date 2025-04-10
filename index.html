@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>百度开盒事件 - 媒体参与可视化</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,33 +25,47 @@
             width: 100%;
             height: 600px;
         }
+        .timeline {
+            width: 80%;
+            margin: 30px auto;
+            text-align: center;
+        }
+        .timeline button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .timeline button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
     <h2>百度开盒事件：媒体类型参与分布</h2>
 
-    <!-- 初始曝光期 -->
+    <div class="timeline">
+        <button onclick="updateChart('初始曝光期')">初始曝光期</button>
+        <button onclick="updateChart('热议高峰期')">热议高峰期</button>
+        <button onclick="updateChart('官方应对期')">官方应对期</button>
+        <button onclick="updateChart('舆论回落期')">舆论回落期</button>
+    </div>
+
+    <!-- 圆环图展示区域 -->
     <div class="chart-container">
-        <h3>初始曝光期（3月12日0时——3月17日18时）</h3>
+        <h3>央级媒体</h3>
         <div id="chart1" class="chart"></div>
     </div>
-
-    <!-- 热议高峰期 -->
     <div class="chart-container">
-        <h3>热议高峰期（3月17日18时——3月19日20时）</h3>
+        <h3>行业媒体</h3>
         <div id="chart2" class="chart"></div>
     </div>
-
-    <!-- 官方应对期 -->
     <div class="chart-container">
-        <h3>官方应对期（3月19日20时——3月20日23时）</h3>
+        <h3>地方媒体</h3>
         <div id="chart3" class="chart"></div>
-    </div>
-
-    <!-- 舆论回落期 -->
-    <div class="chart-container">
-        <h3>舆论回落期（3月20日23时后）</h3>
-        <div id="chart4" class="chart"></div>
     </div>
 
     <script>
@@ -62,11 +77,6 @@
                 tooltip: {
                     trigger: 'item',
                     formatter: '{b}: {c} ({d}%)'
-                },
-                legend: {
-                    orient: 'vertical',
-                    left: 'left',
-                    data: ['央级媒体', '行业媒体', '地方媒体']
                 },
                 series: [
                     {
@@ -88,11 +98,7 @@
                         labelLine: {
                             show: false
                         },
-                        data: [
-                            { value: mediaData['央级媒体'], name: '央级媒体' },
-                            { value: mediaData['行业媒体'], name: '行业媒体' },
-                            { value: mediaData['地方媒体'], name: '地方媒体' }
-                        ]
+                        data: mediaData
                     }
                 ]
             };
@@ -102,17 +108,38 @@
 
         // 数据
         var data = {
-            "初始曝光期": { '央级媒体': 0, '行业媒体': 0, '地方媒体': 2 },
-            "热议高峰期": { '央级媒体': 14, '行业媒体': 2, '地方媒体': 60 },
-            "官方应对期": { '央级媒体': 10, '行业媒体': 2, '地方媒体': 71 },
-            "舆论回落期": { '央级媒体': 4, '行业媒体': 2, '地方媒体': 37 }
+            "初始曝光期": {
+                '央级媒体': [{ value: 0, name: '央级媒体' }],
+                '行业媒体': [{ value: 0, name: '行业媒体' }],
+                '地方媒体': [{ value: 2, name: '地方媒体' }]
+            },
+            "热议高峰期": {
+                '央级媒体': [{ value: 14, name: '央级媒体' }],
+                '行业媒体': [{ value: 2, name: '行业媒体' }],
+                '地方媒体': [{ value: 60, name: '地方媒体' }]
+            },
+            "官方应对期": {
+                '央级媒体': [{ value: 10, name: '央级媒体' }],
+                '行业媒体': [{ value: 2, name: '行业媒体' }],
+                '地方媒体': [{ value: 71, name: '地方媒体' }]
+            },
+            "舆论回落期": {
+                '央级媒体': [{ value: 4, name: '央级媒体' }],
+                '行业媒体': [{ value: 2, name: '行业媒体' }],
+                '地方媒体': [{ value: 37, name: '地方媒体' }]
+            }
         };
 
-        // 创建每个阶段的图表
-        createChart('chart1', data['初始曝光期']);
-        createChart('chart2', data['热议高峰期']);
-        createChart('chart3', data['官方应对期']);
-        createChart('chart4', data['舆论回落期']);
+        // 初始显示热议高峰期的圆环图
+        updateChart('热议高峰期');
+
+        // 根据选择的阶段更新圆环图
+        function updateChart(phase) {
+            // 清空之前的图表
+            createChart('chart1', data[phase]['央级媒体']);
+            createChart('chart2', data[phase]['行业媒体']);
+            createChart('chart3', data[phase]['地方媒体']);
+        }
     </script>
 </body>
 </html>

@@ -11,11 +11,12 @@
             margin: 0;
             padding: 0;
             text-align: center;
-            background-color: #f4f4f4;
+            background-color: #f4f4f4; /* 背景颜色保持不变 */
         }
         h2 {
             margin-top: 30px;
             font-size: 24px;
+            color: #1O2B53; /* 设置标题颜色 */
         }
         /* 时间轴 */
         .timeline {
@@ -30,7 +31,7 @@
         .time-point {
             padding: 12px 20px;
             margin: 0 10px;
-            background-color: #007bff;
+            background-color: #1O2B53; /* 按钮背景色 */
             color: white;
             border: none;
             border-radius: 25px;
@@ -39,10 +40,10 @@
             font-size: 16px;
         }
         .time-point:hover {
-            background-color: #0056b3;
+            background-color: #CEB5D4; /* 按钮 hover 状态色 */
         }
         .time-point.active {
-            background-color: #0056b3;
+            background-color: #4E7AB1; /* 按钮 active 状态色 */
         }
         /* 图表容器 */
         .charts-container {
@@ -165,35 +166,35 @@
             "初始曝光期": {
                 '央级媒体': [{ value: 0, name: '央级媒体', itemStyle: { color: '#d3d3d3' } }, { value: 18, name: '其他', itemStyle: { color: '#d3d3d3' } }],
                 '行业媒体': [{ value: 0, name: '行业媒体', itemStyle: { color: '#d3d3d3' } }, { value: 4, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 2, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 125, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '地方媒体': [{ value: 2, name: '地方媒体', itemStyle: { color: '#4E7AB1' } }, { value: 125, name: '其他', itemStyle: { color: '#d3d3d3' } }],
                 '央级媒体数量': 0, '行业媒体数量': 0, '地方媒体数量': 2
             },
             "热议高峰期": {
-                '央级媒体': [{ value: 14, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 4, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 60, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 67, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '央级媒体': [{ value: 14, name: '央级媒体', itemStyle: { color: '#4E7AB1' } }, { value: 4, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#7D9FCO' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '地方媒体': [{ value: 60, name: '地方媒体', itemStyle: { color: '#4E7AB1' } }, { value: 67, name: '其他', itemStyle: { color: '#d3d3d3' } }],
                 '央级媒体数量': 14, '行业媒体数量': 2, '地方媒体数量': 60
             },
             "官方应对期": {
-                '央级媒体': [{ value: 10, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 8, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 71, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 56, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '央级媒体': [{ value: 10, name: '央级媒体', itemStyle: { color: '#4E7AB1' } }, { value: 8, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#7D9FCO' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '地方媒体': [{ value: 71, name: '地方媒体', itemStyle: { color: '#4E7AB1' } }, { value: 56, name: '其他', itemStyle: { color: '#d3d3d3' } }],
                 '央级媒体数量': 10, '行业媒体数量': 2, '地方媒体数量': 71
             },
             "舆论回落期": {
-                '央级媒体': [{ value: 4, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 14, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 37, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 90, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '央级媒体': [{ value: 4, name: '央级媒体', itemStyle: { color: '#4E7AB1' } }, { value: 14, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#7D9FCO' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '地方媒体': [{ value: 37, name: '地方媒体', itemStyle: { color: '#4E7AB1' } }, { value: 90, name: '其他', itemStyle: { color: '#d3d3d3' } }],
                 '央级媒体数量': 4, '行业媒体数量': 2, '地方媒体数量': 37
             }
         };
 
-        // 选择初始阶段
+        // 初始化页面时加载第一个阶段的图表
         let currentPhase = "初始曝光期";
         updateChart(currentPhase);
 
+        // 更新时间轴样式并渲染图表
         function updateChart(phase) {
-            // 更新时间轴样式
             document.querySelectorAll('.time-point').forEach((button) => {
                 button.classList.remove('active');
             });
@@ -202,7 +203,6 @@
             document.getElementById('point3').classList.add('active');
             document.getElementById('point4').classList.add('active');
             
-            // 渲染图表
             createChart('chart1', data[phase]['央级媒体'], '央级媒体', data[phase]['央级媒体数量'], phase);
             createChart('chart2', data[phase]['行业媒体'], '行业媒体', data[phase]['行业媒体数量'], phase);
             createChart('chart3', data[phase]['地方媒体'], '地方媒体', data[phase]['地方媒体数量'], phase);

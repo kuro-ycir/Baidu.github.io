@@ -11,14 +11,13 @@
             margin: 0;
             padding: 0;
             text-align: center;
-            background-color: #f4f4f4; /* 背景颜色保持不变 */
+            background-color: #f4f4f4;
         }
         h2 {
             margin-top: 30px;
             font-size: 32px;
-            color: #102B53; /* 设置标题颜色 */
+            color: #102B53;
         }
-        /* 时间轴 */
         .timeline {
             display: flex;
             justify-content: center;
@@ -31,7 +30,7 @@
         .time-point {
             padding: 12px 20px;
             margin: 0 10px;
-            background-color: #CEB5D4; /* 按钮背景色 */
+            background-color: #CEB5D4;
             color: white;
             border: none;
             border-radius: 25px;
@@ -40,12 +39,11 @@
             font-size: 16px;
         }
         .time-point:hover {
-            background-color: #CEB5D4; /* 按钮 hover 状态色 */
+            background-color: #CEB5D4;
         }
         .time-point.active {
-            background-color: #CEB5D4; /* 按钮 active 状态色 */
+            background-color: #CEB5D4;
         }
-        /* 图表容器 */
         .charts-container {
             display: flex;
             justify-content: space-around;
@@ -64,7 +62,6 @@
 <body>
     <h2>媒体参与情况</h2>
 
-    <!-- 时间轴 -->
     <div class="timeline">
         <button class="time-point" onclick="updateChart('初始曝光期')" id="point1">初始曝光期</button>
         <button class="time-point" onclick="updateChart('热议高峰期')" id="point2">热议高峰期</button>
@@ -72,7 +69,6 @@
         <button class="time-point" onclick="updateChart('舆论回落期')" id="point4">舆论回落期</button>
     </div>
 
-    <!-- 三个圆环图展示区域 -->
     <div class="charts-container">
         <div class="chart-container">
             <h3>央级媒体</h3>
@@ -89,7 +85,6 @@
     </div>
 
     <script>
-        // 初始化 ECharts
         function createChart(elementId, mediaData, mediaType, totalCount, phase) {
             var chart = echarts.init(document.getElementById(elementId));
 
@@ -120,7 +115,6 @@
                 tooltip: {
                     trigger: 'item',
                     formatter: function (params) {
-                        // 只有非灰色部分显示tooltip
                         if (params.data.itemStyle.color !== '#d3d3d3') {
                             var mediaType = params.name;
                             var mediaText = tooltipData[phase][mediaType];
@@ -128,9 +122,17 @@
                         }
                     },
                     position: function (point, params, dom, rect, size) {
-                        var x = point[0] + 20;  // 鼠标的 x 坐标
-                        var y = point[1] + 20; // 在鼠标下方 20px
-                        return [x, y]; // 返回新的位置
+                        var x = point[0];
+                        var y = point[1] + 20;
+
+                        // 根据媒体类型调整 tooltip 显示位置
+                        if (params.name === '央级媒体') {
+                            return [x + 20, y]; // 右侧
+                        } else if (params.name === '地方媒体') {
+                            return [x - dom.clientWidth - 20, y]; // 左侧
+                        } else {
+                            return [x, y]; // 默认居中
+                        }
                     }
                 },
                 series: [
@@ -144,7 +146,7 @@
                             position: 'center',
                             fontSize: 16,
                             formatter: function() {
-                                return mediaType + ': ' + totalCount; // 显示参与数量
+                                return mediaType + ': ' + totalCount;
                             },
                             fontWeight: 'bold'
                         },
@@ -166,7 +168,6 @@
             chart.setOption(option);
         }
 
-        // 数据 - 每个阶段的媒体数量
         var data = {
             "初始曝光期": {
                 '央级媒体': [{ value: 0, name: '央级媒体', itemStyle: { color: '#d3d3d3' } }, { value: 18, name: '其他', itemStyle: { color: '#d3d3d3' } }],
@@ -194,7 +195,6 @@
             }
         };
 
-        // 更新图表
         function updateChart(phase) {
             var mediaData1 = data[phase]['央级媒体'];
             var mediaData2 = data[phase]['行业媒体'];
@@ -209,7 +209,6 @@
             createChart('chart3', mediaData3, '地方媒体', totalCount3, phase);
         }
 
-        // 默认显示初始曝光期
         updateChart('初始曝光期');
     </script>
 </body>

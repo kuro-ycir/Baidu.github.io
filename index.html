@@ -53,6 +53,9 @@
         button:hover {
             background-color: #4E7AB1; /* 按钮悬停颜色 */
         }
+        .chart-container canvas {
+            transition: 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -135,7 +138,7 @@
                 datasets: [{
                     label: label,
                     data: [data.count, 18 - data.count],
-                    backgroundColor: ['#4E7AB1', '#7D9FC0'], // 使用指定的色系
+                    backgroundColor: ['#4E7AB1', '#D3D3D3'], // 使用灰色保持背景颜色
                     borderColor: '#ffffff',
                     borderWidth: 1
                 }]
@@ -149,6 +152,14 @@
                 },
                 animation: {
                     animateScale: true
+                },
+                elements: {
+                    center: {
+                        text: data.count, // 显示参与数量
+                        fontStyle: 'bold',
+                        fontColor: '#102B53',
+                        fontSize: 20
+                    }
                 },
                 onHover: (event, chartElement) => {
                     if (chartElement.length) {
@@ -171,4 +182,3 @@
 
 </body>
 </html>
-

@@ -1,0 +1,88 @@
+// App.jsx
+import { useState } from 'react';
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+
+const COLORS = ['#ff6b6b', '#4dabf7', '#ffd43b'];
+
+const timeSeriesData = {
+  '2024-12-10': [
+    { name: '央级媒体', value: 5, description: '当日有5家央级媒体发声' },
+    { name: '地方媒体', value: 8, description: '地方报道集中在华中地区' },
+    { name: '行业媒体', value: 2, description: '行业媒体初步关注事件' },
+  ],
+  '2024-12-11': [
+    { name: '央级媒体', value: 12, description: '新华社、央视等集中发声' },
+    { name: '地方媒体', value: 15, description: '地方媒体报道显著增多' },
+    { name: '行业媒体', value: 5, description: '公益、法律媒体持续跟进' },
+  ],
+  '2024-12-12': [
+    { name: '央级媒体', value: 18, description: '央级媒体持续推进话题讨论' },
+    { name: '地方媒体', value: 22, description: '地方参与热度高涨' },
+    { name: '行业媒体', value: 10, description: '形成多行业联动关注' },
+  ],
+};
+
+const App = () => {
+  const dates = Object.keys(timeSeriesData);
+  const [selectedDate, setSelectedDate] = useState(dates[0]);
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const data = timeSeriesData[selectedDate];
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
+      <h1 className="text-2xl font-bold mb-4">百度开盒事件：媒体参与动态可视化</h1>
+
+      <div className="mb-4">
+        <label htmlFor="date-slider" className="block text-sm font-medium mb-1">
+          时间：{selectedDate}
+        </label>
+        <input
+          type="range"
+          id="date-slider"
+          min={0}
+          max={dates.length - 1}
+          value={dates.indexOf(selectedDate)}
+          onChange={(e) => setSelectedDate(dates[parseInt(e.target.value)])}
+          className="w-64"
+        />
+      </div>
+
+      <PieChart width={400} height={400}>
+        <Pie
+          data={data}
+          cx="50%"
+          cy="50%"
+          innerRadius={80}
+          outerRadius={120}
+          dataKey="value"
+          onMouseEnter={(_, index) => setActiveIndex(index)}
+          onMouseLeave={() => setActiveIndex(null)}
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        <Tooltip
+          content={({ active, payload }) =>
+            active && payload?.length ? (
+              <div className="bg-white p-2 border rounded shadow text-sm">
+                <p className="font-bold">{payload[0].name}</p>
+                <p>{payload[0].payload.description}</p>
+              </div>
+            ) : null
+          }
+        />
+      </PieChart>
+
+      {activeIndex !== null && (
+        <div className="mt-4 text-center text-gray-700">
+          <h2 className="text-lg font-semibold">{data[activeIndex].name}</h2>
+          <p>{data[activeIndex].description}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default App;

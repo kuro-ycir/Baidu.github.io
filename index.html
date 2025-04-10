@@ -17,17 +17,19 @@
         }
         .timeline {
             margin: 30px 0;
+            display: flex;
+            justify-content: center;
         }
-        .timeline button {
-            padding: 10px 20px;
+        .timeline .time-point {
+            padding: 15px 30px;
             margin: 0 10px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 25px;
             cursor: pointer;
         }
-        .timeline button:hover {
+        .timeline .time-point:hover {
             background-color: #45a049;
         }
         .charts-container {
@@ -47,11 +49,12 @@
 <body>
     <h2>百度开盒事件：媒体类型参与分布</h2>
 
+    <!-- 时间轴 -->
     <div class="timeline">
-        <button onclick="updateChart('初始曝光期')">初始曝光期</button>
-        <button onclick="updateChart('热议高峰期')">热议高峰期</button>
-        <button onclick="updateChart('官方应对期')">官方应对期</button>
-        <button onclick="updateChart('舆论回落期')">舆论回落期</button>
+        <button class="time-point" onclick="updateChart('初始曝光期')">初始曝光期</button>
+        <button class="time-point" onclick="updateChart('热议高峰期')">热议高峰期</button>
+        <button class="time-point" onclick="updateChart('官方应对期')">官方应对期</button>
+        <button class="time-point" onclick="updateChart('舆论回落期')">舆论回落期</button>
     </div>
 
     <!-- 三个圆环图展示区域 -->

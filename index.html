@@ -89,7 +89,7 @@
 
     <script>
         // 初始化 ECharts
-        function createChart(elementId, mediaData, mediaType) {
+        function createChart(elementId, mediaData, mediaType, totalCount) {
             var chart = echarts.init(document.getElementById(elementId));
 
             var option = {
@@ -112,7 +112,9 @@
                             show: true,
                             position: 'center',
                             fontSize: 16,
-                            formatter: mediaType,  // 仅显示媒体类型名称
+                            formatter: function() {
+                                return mediaType + ': ' + totalCount; // 显示参与数量
+                            },
                             fontWeight: 'bold'
                         },
                         emphasis: {
@@ -138,22 +140,26 @@
             "初始曝光期": {
                 '央级媒体': [{ value: 0, name: '央级媒体', itemStyle: { color: '#d3d3d3' } }, { value: 18, name: '其他', itemStyle: { color: '#d3d3d3' } }],
                 '行业媒体': [{ value: 0, name: '行业媒体', itemStyle: { color: '#d3d3d3' } }, { value: 4, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 2, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 125, name: '其他', itemStyle: { color: '#d3d3d3' } }]
+                '地方媒体': [{ value: 2, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 125, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '央级媒体数量': 0, '行业媒体数量': 0, '地方媒体数量': 2
             },
             "热议高峰期": {
                 '央级媒体': [{ value: 14, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 4, name: '其他', itemStyle: { color: '#d3d3d3' } }],
                 '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 60, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 67, name: '其他', itemStyle: { color: '#d3d3d3' } }]
+                '地方媒体': [{ value: 60, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 67, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '央级媒体数量': 14, '行业媒体数量': 2, '地方媒体数量': 60
             },
             "官方应对期": {
                 '央级媒体': [{ value: 10, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 8, name: '其他', itemStyle: { color: '#d3d3d3' } }],
                 '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 71, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 56, name: '其他', itemStyle: { color: '#d3d3d3' } }]
+                '地方媒体': [{ value: 71, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 56, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '央级媒体数量': 10, '行业媒体数量': 2, '地方媒体数量': 71
             },
             "舆论回落期": {
                 '央级媒体': [{ value: 4, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 14, name: '其他', itemStyle: { color: '#d3d3d3' } }],
                 '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 37, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 90, name: '其他', itemStyle: { color: '#d3d3d3' } }]
+                '地方媒体': [{ value: 37, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 90, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '央级媒体数量': 4, '行业媒体数量': 2, '地方媒体数量': 37
             }
         };
 
@@ -166,9 +172,9 @@
             var phaseData = data[phase];
 
             // 更新图表
-            createChart('chart1', phaseData['央级媒体'], '央级媒体');
-            createChart('chart2', phaseData['行业媒体'], '行业媒体');
-            createChart('chart3', phaseData['地方媒体'], '地方媒体');
+            createChart('chart1', phaseData['央级媒体'], '央级媒体', phaseData['央级媒体数量']);
+            createChart('chart2', phaseData['行业媒体'], '行业媒体', phaseData['行业媒体数量']);
+            createChart('chart3', phaseData['地方媒体'], '地方媒体', phaseData['地方媒体数量']);
 
             // 更新时间轴的激活状态
             document.querySelectorAll('.time-point').forEach(btn => btn.classList.remove('active'));

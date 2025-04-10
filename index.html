@@ -81,7 +81,7 @@
                     formatter: function (params) {
                         // 只有非灰色部分显示tooltip
                         if (params.data.itemStyle.color !== '#d3d3d3') {
-                            return params.name + ": " + params.value + " (" + params.percent.toFixed(2) + "%)";
+                            return params.name + ": " + params.value;
                         }
                     }
                 },
@@ -95,7 +95,7 @@
                             show: true,
                             position: 'center',
                             fontSize: 16,
-                            formatter: '{b}\n' + mediaType + ': {c}',  // 显示中央文字
+                            formatter: '{b}\n' + mediaType + ': {c}',  // 显示中央文字为实际的参与数量
                             fontWeight: 'bold'
                         },
                         emphasis: {
@@ -119,24 +119,24 @@
         // 数据 - 每个阶段的媒体数量
         var data = {
             "初始曝光期": {
-                '央级媒体': [{ value: 0, name: '央级媒体', itemStyle: { color: '#d3d3d3' } }, { value: 100, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '行业媒体': [{ value: 0, name: '行业媒体', itemStyle: { color: '#d3d3d3' } }, { value: 100, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 1.57, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 98.43, name: '其他', itemStyle: { color: '#d3d3d3' } }]
+                '央级媒体': [{ value: 0, name: '央级媒体', itemStyle: { color: '#d3d3d3' } }, { value: 18, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '行业媒体': [{ value: 0, name: '行业媒体', itemStyle: { color: '#d3d3d3' } }, { value: 4, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '地方媒体': [{ value: 2, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 125, name: '其他', itemStyle: { color: '#d3d3d3' } }]
             },
             "热议高峰期": {
-                '央级媒体': [{ value: 77.78, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 22.22, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '行业媒体': [{ value: 50, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 50, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 47.24, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 52.76, name: '其他', itemStyle: { color: '#d3d3d3' } }]
+                '央级媒体': [{ value: 14, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 4, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '地方媒体': [{ value: 60, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 67, name: '其他', itemStyle: { color: '#d3d3d3' } }]
             },
             "官方应对期": {
-                '央级媒体': [{ value: 55.56, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 44.44, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '行业媒体': [{ value: 50, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 50, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 55.91, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 44.09, name: '其他', itemStyle: { color: '#d3d3d3' } }]
+                '央级媒体': [{ value: 10, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 8, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '地方媒体': [{ value: 71, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 56, name: '其他', itemStyle: { color: '#d3d3d3' } }]
             },
             "舆论回落期": {
-                '央级媒体': [{ value: 22.22, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 77.78, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '行业媒体': [{ value: 50, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 50, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 29.13, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 70.87, name: '其他', itemStyle: { color: '#d3d3d3' } }]
+                '央级媒体': [{ value: 4, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 14, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '地方媒体': [{ value: 37, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 90, name: '其他', itemStyle: { color: '#d3d3d3' } }]
             }
         };
 

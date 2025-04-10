@@ -126,6 +126,11 @@
                             var mediaText = tooltipData[phase][mediaType];
                             return mediaType + ": " + params.value + "<br>" + mediaText;
                         }
+                    },
+                    position: function (point, params, dom, rect, size) {
+                        var x = point[0];  // 鼠标的 x 坐标
+                        var y = point[1] + 20; // 在鼠标下方 20px
+                        return [x, y]; // 返回新的位置
                     }
                 },
                 series: [
@@ -178,35 +183,34 @@
             "官方应对期": {
                 '央级媒体': [{ value: 10, name: '央级媒体', itemStyle: { color: '#50698D' } }, { value: 8, name: '其他', itemStyle: { color: '#d3d3d3' } }],
                 '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#4E7AB1' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 71, name: '地方媒体', itemStyle: { color: '#7D9FC0' } }, { value: 56, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '央级媒体数量': 10, '行业媒体数量': 2, '地方媒体数量': 71
+                '地方媒体': [{ value: 20, name: '地方媒体', itemStyle: { color: '#7D9FC0' } }, { value: 15, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '央级媒体数量': 10, '行业媒体数量': 2, '地方媒体数量': 20
             },
             "舆论回落期": {
-                '央级媒体': [{ value: 4, name: '央级媒体', itemStyle: { color: '#50698D' } }, { value: 14, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#4E7AB1' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 37, name: '地方媒体', itemStyle: { color: '#7D9FC0' } }, { value: 90, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '央级媒体数量': 4, '行业媒体数量': 2, '地方媒体数量': 37
+                '央级媒体': [{ value: 5, name: '央级媒体', itemStyle: { color: '#50698D' } }, { value: 8, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '行业媒体': [{ value: 1, name: '行业媒体', itemStyle: { color: '#4E7AB1' } }, { value: 0, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '地方媒体': [{ value: 5, name: '地方媒体', itemStyle: { color: '#7D9FC0' } }, { value: 12, name: '其他', itemStyle: { color: '#d3d3d3' } }],
+                '央级媒体数量': 5, '行业媒体数量': 1, '地方媒体数量': 5
             }
         };
 
-        // 初始化页面时加载第一个阶段的图表
-        let currentPhase = "初始曝光期";
-        updateChart(currentPhase);
-
-        // 更新时间轴样式并渲染图表
+        // 更新图表
         function updateChart(phase) {
-            document.querySelectorAll('.time-point').forEach((button) => {
-                button.classList.remove('active');
-            });
-            document.getElementById('point1').classList.add('active');
-            document.getElementById('point2').classList.add('active');
-            document.getElementById('point3').classList.add('active');
-            document.getElementById('point4').classList.add('active');
-            
-            createChart('chart1', data[phase]['央级媒体'], '央级媒体', data[phase]['央级媒体数量'], phase);
-            createChart('chart2', data[phase]['行业媒体'], '行业媒体', data[phase]['行业媒体数量'], phase);
-            createChart('chart3', data[phase]['地方媒体'], '地方媒体', data[phase]['地方媒体数量'], phase);
+            var mediaData1 = data[phase]['央级媒体'];
+            var mediaData2 = data[phase]['行业媒体'];
+            var mediaData3 = data[phase]['地方媒体'];
+
+            var totalCount1 = data[phase]['央级媒体数量'];
+            var totalCount2 = data[phase]['行业媒体数量'];
+            var totalCount3 = data[phase]['地方媒体数量'];
+
+            createChart('chart1', mediaData1, '央级媒体', totalCount1, phase);
+            createChart('chart2', mediaData2, '行业媒体', totalCount2, phase);
+            createChart('chart3', mediaData3, '地方媒体', totalCount3, phase);
         }
+
+        // 默认显示初始曝光期
+        updateChart('初始曝光期');
     </script>
 </body>
 </html>

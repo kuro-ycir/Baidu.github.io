@@ -11,31 +11,45 @@
             margin: 0;
             padding: 0;
             text-align: center;
+            background-color: #f4f4f4;
         }
         h2 {
-            margin-top: 20px;
+            margin-top: 30px;
+            font-size: 24px;
         }
+        /* 时间轴 */
         .timeline {
-            margin: 30px 0;
             display: flex;
             justify-content: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        .timeline .time-point {
-            padding: 15px 30px;
+        .time-point {
+            padding: 12px 20px;
             margin: 0 10px;
-            background-color: #4CAF50;
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 25px;
             cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
         }
-        .timeline .time-point:hover {
-            background-color: #45a049;
+        .time-point:hover {
+            background-color: #0056b3;
         }
+        .time-point.active {
+            background-color: #0056b3;
+        }
+        /* 图表容器 */
         .charts-container {
             display: flex;
             justify-content: space-around;
             margin-top: 40px;
+            padding: 20px;
         }
         .chart-container {
             width: 30%;
@@ -51,10 +65,10 @@
 
     <!-- 时间轴 -->
     <div class="timeline">
-        <button class="time-point" onclick="updateChart('初始曝光期')">初始曝光期</button>
-        <button class="time-point" onclick="updateChart('热议高峰期')">热议高峰期</button>
-        <button class="time-point" onclick="updateChart('官方应对期')">官方应对期</button>
-        <button class="time-point" onclick="updateChart('舆论回落期')">舆论回落期</button>
+        <button class="time-point" onclick="updateChart('初始曝光期')" id="point1">初始曝光期</button>
+        <button class="time-point" onclick="updateChart('热议高峰期')" id="point2">热议高峰期</button>
+        <button class="time-point" onclick="updateChart('官方应对期')" id="point3">官方应对期</button>
+        <button class="time-point" onclick="updateChart('舆论回落期')" id="point4">舆论回落期</button>
     </div>
 
     <!-- 三个圆环图展示区域 -->
@@ -75,7 +89,7 @@
 
     <script>
         // 初始化 ECharts
-        function createChart(elementId, mediaData, mediaType, totalMedia) {
+        function createChart(elementId, mediaData, mediaType) {
             var chart = echarts.init(document.getElementById(elementId));
 
             var option = {
@@ -98,7 +112,7 @@
                             show: true,
                             position: 'center',
                             fontSize: 16,
-                            formatter: mediaType + '\n' + '{c}',  // 显示中央文字为媒体类型和实际的参与数量
+                            formatter: mediaType,  // 仅显示媒体类型名称
                             fontWeight: 'bold'
                         },
                         emphasis: {
@@ -152,9 +166,13 @@
             var phaseData = data[phase];
 
             // 更新图表
-            createChart('chart1', phaseData['央级媒体'], '央级媒体: ' + 18, 18);
-            createChart('chart2', phaseData['行业媒体'], '行业媒体: ' + 4, 4);
-            createChart('chart3', phaseData['地方媒体'], '地方媒体: ' + 127, 127);
+            createChart('chart1', phaseData['央级媒体'], '央级媒体');
+            createChart('chart2', phaseData['行业媒体'], '行业媒体');
+            createChart('chart3', phaseData['地方媒体'], '地方媒体');
+
+            // 更新时间轴的激活状态
+            document.querySelectorAll('.time-point').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('point' + (['初始曝光期', '热议高峰期', '官方应对期', '舆论回落期'].indexOf(phase) + 1)).classList.add('active');
         }
     </script>
 </body>

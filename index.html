@@ -11,10 +11,6 @@
             margin: 0;
             padding: 0;
             text-align: center;
-            background-color: #CEB5D4; /* 使用指定的背景颜色 */
-        }
-        h1 {
-            color: #102B53; /* 主标题颜色 */
         }
         .container {
             display: flex;
@@ -39,22 +35,6 @@
         }
         .timeline {
             margin: 30px 0;
-        }
-        button {
-            background-color: #50698D; /* 按钮背景色 */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin: 0 10px;
-        }
-        button:hover {
-            background-color: #4E7AB1; /* 按钮悬停颜色 */
-        }
-        .chart-container canvas {
-            transition: 0.3s ease;
         }
     </style>
 </head>
@@ -138,7 +118,7 @@
                 datasets: [{
                     label: label,
                     data: [data.count, 18 - data.count],
-                    backgroundColor: ['#4E7AB1', '#D3D3D3'], // 使用灰色保持背景颜色
+                    backgroundColor: ['#3498db', '#bdc3c7'],
                     borderColor: '#ffffff',
                     borderWidth: 1
                 }]
@@ -152,14 +132,6 @@
                 },
                 animation: {
                     animateScale: true
-                },
-                elements: {
-                    center: {
-                        text: data.count, // 显示参与数量
-                        fontStyle: 'bold',
-                        fontColor: '#102B53',
-                        fontSize: 20
-                    }
                 },
                 onHover: (event, chartElement) => {
                     if (chartElement.length) {
@@ -182,3 +154,4 @@
 
 </body>
 </html>
+

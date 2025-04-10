@@ -1,185 +1,174 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>百度开盒事件 - 媒体参与可视化</title>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <title>动态舆情可视化</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
-            background-color: #f4f4f4;
+            background-color: #CEB5D4; /* 使用指定的背景颜色 */
         }
-        h2 {
-            margin-top: 30px;
-            font-size: 24px;
+        h1 {
+            color: #102B53; /* 主标题颜色 */
         }
-        /* 时间轴 */
-        .timeline {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        .time-point {
-            padding: 12px 20px;
-            margin: 0 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-size: 16px;
-        }
-        .time-point:hover {
-            background-color: #0056b3;
-        }
-        .time-point.active {
-            background-color: #0056b3;
-        }
-        /* 图表容器 */
-        .charts-container {
+        .container {
             display: flex;
             justify-content: space-around;
-            margin-top: 40px;
-            padding: 20px;
+            margin: 50px;
         }
         .chart-container {
-            width: 30%;
+            width: 300px;
+            height: 300px;
+            position: relative;
         }
-        .chart {
-            width: 100%;
-            height: 400px;
+        .tooltip {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 5px;
+            display: none;
+            font-size: 12px;
+        }
+        .timeline {
+            margin: 30px 0;
+        }
+        button {
+            background-color: #50698D; /* 按钮背景色 */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
+        button:hover {
+            background-color: #4E7AB1; /* 按钮悬停颜色 */
         }
     </style>
 </head>
 <body>
-    <h2>百度开盒事件：媒体类型参与分布</h2>
 
-    <!-- 时间轴 -->
-    <div class="timeline">
-        <button class="time-point" onclick="updateChart('初始曝光期')" id="point1">初始曝光期</button>
-        <button class="time-point" onclick="updateChart('热议高峰期')" id="point2">热议高峰期</button>
-        <button class="time-point" onclick="updateChart('官方应对期')" id="point3">官方应对期</button>
-        <button class="time-point" onclick="updateChart('舆论回落期')" id="point4">舆论回落期</button>
+<h1>媒体参与情况 - 百度开盒事件</h1>
+<div class="timeline">
+    <button onclick="updateData('initial')">初始曝光期</button>
+    <button onclick="updateData('peak')">热议高峰期</button>
+    <button onclick="updateData('official')">官方应对期</button>
+    <button onclick="updateData('decline')">舆论回落期</button>
+</div>
+
+<div class="container">
+    <!-- 各阶段的媒体圆环图 -->
+    <div class="chart-container">
+        <canvas id="centralMediaChart"></canvas>
+        <div id="tooltip" class="tooltip"></div>
     </div>
-
-    <!-- 三个圆环图展示区域 -->
-    <div class="charts-container">
-        <div class="chart-container">
-            <h3>央级媒体</h3>
-            <div id="chart1" class="chart"></div>
-        </div>
-        <div class="chart-container">
-            <h3>行业媒体</h3>
-            <div id="chart2" class="chart"></div>
-        </div>
-        <div class="chart-container">
-            <h3>地方媒体</h3>
-            <div id="chart3" class="chart"></div>
-        </div>
+    <div class="chart-container">
+        <canvas id="industryMediaChart"></canvas>
+        <div id="tooltip2" class="tooltip"></div>
     </div>
+    <div class="chart-container">
+        <canvas id="localMediaChart"></canvas>
+        <div id="tooltip3" class="tooltip"></div>
+    </div>
+</div>
 
-    <script>
-        // 初始化 ECharts
-        function createChart(elementId, mediaData, mediaType, totalCount) {
-            var chart = echarts.init(document.getElementById(elementId));
+<script>
+    const mediaData = {
+        'initial': {
+            'central': { 'count': 0, 'text': '' },
+            'industry': { 'count': 0, 'text': '' },
+            'local': { 'count': 2, 'text': '第一财经日报：【#谢广军称已严肃批评女儿行为#】' }
+        },
+        'peak': {
+            'central': { 'count': 14, 'text': '中国新闻周刊：【#百度高管谢广军回应女儿事件#】' },
+            'industry': { 'count': 2, 'text': '三联生活周刊：【#部分开盒挂人者仅仅为了宣泄情绪#】' },
+            'local': { 'count': 60, 'text': '南方网：【#南方网评# “开盒者反被开盒”》' }
+        },
+        'official': {
+            'central': { 'count': 10, 'text': '环球时报：【#百度通报副总裁女儿开盒事件#】' },
+            'industry': { 'count': 2, 'text': '中国经营报：【#百度回应谢广军女儿开盒#】' },
+            'local': { 'count': 71, 'text': '北京日报：#开盒风波后百度解答疑虑#' }
+        },
+        'decline': {
+            'central': { 'count': 4, 'text': '中国青年网：【网暴事件频发背后-#谁在喂养开盒挂人数据库#】' },
+            'industry': { 'count': 2, 'text': '中国妇女报：【#百度公布开盒事件详细调查过程#】' },
+            'local': { 'count': 37, 'text': '新黄河：【#内部人士回应传百度谢广军提离职#】' }
+        }
+    };
 
-            var option = {
-                tooltip: {
-                    trigger: 'item',
-                    formatter: function (params) {
-                        // 只有非灰色部分显示tooltip
-                        if (params.data.itemStyle.color !== '#d3d3d3') {
-                            return params.name + ": " + params.value;
-                        }
+    let centralMediaChart, industryMediaChart, localMediaChart;
+
+    function updateData(stage) {
+        const data = mediaData[stage];
+
+        // 更新圆环图数据
+        centralMediaChart.data.datasets[0].data = [data.central.count, 18 - data.central.count];
+        centralMediaChart.update();
+
+        industryMediaChart.data.datasets[0].data = [data.industry.count, 4 - data.industry.count];
+        industryMediaChart.update();
+
+        localMediaChart.data.datasets[0].data = [data.local.count, 127 - data.local.count];
+        localMediaChart.update();
+
+        // 更新文本显示
+        document.getElementById('tooltip').textContent = `央级媒体：${data.central.text}`;
+        document.getElementById('tooltip2').textContent = `行业媒体：${data.industry.text}`;
+        document.getElementById('tooltip3').textContent = `地方媒体：${data.local.text}`;
+    }
+
+    function createChart(canvasId, data, label) {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        return new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['参与媒体', '其他'],
+                datasets: [{
+                    label: label,
+                    data: [data.count, 18 - data.count],
+                    backgroundColor: ['#4E7AB1', '#7D9FC0'], // 使用指定的色系
+                    borderColor: '#ffffff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        enabled: false
                     }
                 },
-                series: [
-                    {
-                        name: '媒体类型',
-                        type: 'pie',
-                        radius: ['40%', '70%'],
-                        avoidLabelOverlap: false,
-                        label: {
-                            show: true,
-                            position: 'center',
-                            fontSize: 16,
-                            formatter: function() {
-                                return mediaType + ': ' + totalCount; // 显示参与数量
-                            },
-                            fontWeight: 'bold'
-                        },
-                        emphasis: {
-                            label: {
-                                show: true,
-                                fontSize: '20',
-                                fontWeight: 'bold'
-                            }
-                        },
-                        labelLine: {
-                            show: false
-                        },
-                        data: mediaData
+                animation: {
+                    animateScale: true
+                },
+                onHover: (event, chartElement) => {
+                    if (chartElement.length) {
+                        const tooltip = document.getElementById(canvasId === 'centralMediaChart' ? 'tooltip' : canvasId === 'industryMediaChart' ? 'tooltip2' : 'tooltip3');
+                        tooltip.style.display = 'block';
+                        tooltip.style.left = event.x + 'px';
+                        tooltip.style.top = event.y + 'px';
                     }
-                ]
-            };
-
-            chart.setOption(option);
-        }
-
-        // 数据 - 每个阶段的媒体数量
-        var data = {
-            "初始曝光期": {
-                '央级媒体': [{ value: 0, name: '央级媒体', itemStyle: { color: '#d3d3d3' } }, { value: 18, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '行业媒体': [{ value: 0, name: '行业媒体', itemStyle: { color: '#d3d3d3' } }, { value: 4, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 2, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 125, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '央级媒体数量': 0, '行业媒体数量': 0, '地方媒体数量': 2
-            },
-            "热议高峰期": {
-                '央级媒体': [{ value: 14, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 4, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 60, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 67, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '央级媒体数量': 14, '行业媒体数量': 2, '地方媒体数量': 60
-            },
-            "官方应对期": {
-                '央级媒体': [{ value: 10, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 8, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 71, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 56, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '央级媒体数量': 10, '行业媒体数量': 2, '地方媒体数量': 71
-            },
-            "舆论回落期": {
-                '央级媒体': [{ value: 4, name: '央级媒体', itemStyle: { color: '#1f77b4' } }, { value: 14, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '行业媒体': [{ value: 2, name: '行业媒体', itemStyle: { color: '#ff7f0e' } }, { value: 2, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '地方媒体': [{ value: 37, name: '地方媒体', itemStyle: { color: '#1f77b4' } }, { value: 90, name: '其他', itemStyle: { color: '#d3d3d3' } }],
-                '央级媒体数量': 4, '行业媒体数量': 2, '地方媒体数量': 37
+                }
             }
-        };
+        });
+    }
 
-        // 默认显示热议高峰期的圆环图
-        updateChart('热议高峰期');
+    window.onload = () => {
+        centralMediaChart = createChart('centralMediaChart', mediaData.initial.central, '央级媒体');
+        industryMediaChart = createChart('industryMediaChart', mediaData.initial.industry, '行业媒体');
+        localMediaChart = createChart('localMediaChart', mediaData.initial.local, '地方媒体');
+    };
+</script>
 
-        // 根据选择的阶段更新圆环图
-        function updateChart(phase) {
-            // 获取阶段数据
-            var phaseData = data[phase];
-
-            // 更新图表
-            createChart('chart1', phaseData['央级媒体'], '央级媒体', phaseData['央级媒体数量']);
-            createChart('chart2', phaseData['行业媒体'], '行业媒体', phaseData['行业媒体数量']);
-            createChart('chart3', phaseData['地方媒体'], '地方媒体', phaseData['地方媒体数量']);
-
-            // 更新时间轴的激活状态
-            document.querySelectorAll('.time-point').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('point' + (['初始曝光期', '热议高峰期', '官方应对期', '舆论回落期'].indexOf(phase) + 1)).classList.add('active');
-        }
-    </script>
 </body>
 </html>
+
